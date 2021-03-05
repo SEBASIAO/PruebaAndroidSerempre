@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sebasiao.pruebaandroidserempre.adapters.PostsAdapter;
 import com.sebasiao.pruebaandroidserempre.models.PostModel;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView postRv;
     @BindView(R.id.clearPostBt)
     Button clearPostBt;
+    @BindView(R.id.noPostTv)
+    TextView noPostTv;
 
     private NetworkBuilder networkBuilder = new NetworkBuilder();
     private ApiData apiData;
@@ -93,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycler(JSONArray array) {
+        if (array.length() == 0 || array.equals(null)){
+            Toast.makeText(MainActivity.this,"asdsadasdasd",Toast.LENGTH_SHORT).show();
+        }else{
         try {
             postModelArrayList.clear();
             for (int i = 0 ; i < array.length() ; i++){
@@ -106,6 +116,29 @@ public class MainActivity extends AppCompatActivity {
         }catch (JSONException e){
             e.printStackTrace();
         }
+        }
+    }
 
+    @OnClick({R.id.clearPostBt,R.id.reloadIv})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.clearPostBt:
+                clearRv();
+                break;
+            case  R.id.reloadIv:
+                noPostTv.setVisibility(View.GONE);
+                getPost();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void clearRv() {
+        postModelArrayList.clear();
+        postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
+        postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList);
+        postRv.setAdapter(postsAdapter);
+        noPostTv.setVisibility(View.VISIBLE);
     }
 }

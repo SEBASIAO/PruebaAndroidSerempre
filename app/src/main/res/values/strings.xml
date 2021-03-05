@@ -2,4 +2,5 @@
     <string name="app_name">PruebaAndroidSerempre</string>
     <string name="app_tittle">Serempre</string>
     <string name="clear_post_btn">Limpiar</string>
+    <string name="noPost">Para volver a cargar la información toca el botón de recarga en la esquina superior derecha.</string>
 </resources>

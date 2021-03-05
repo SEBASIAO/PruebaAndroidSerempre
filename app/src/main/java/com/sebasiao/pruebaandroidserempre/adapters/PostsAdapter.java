@@ -34,9 +34,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.idTv.setText(postModelArrayList.get(position).getId()+"");
-        holder.titleTvPosts.setText(postModelArrayList.get(position).getTitle());
-        holder.bodyTv.setText(postModelArrayList.get(position).getBody());
+        if (postModelArrayList.size() != 0){
+            holder.idTv.setText(postModelArrayList.get(position).getId()+"");
+            holder.titleTvPosts.setText(postModelArrayList.get(position).getTitle());
+            holder.bodyTv.setText(postModelArrayList.get(position).getBody());
+        }
     }
 
     @Override
