@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             holder.idTv.setText(postModelArrayList.get(position).getId()+"");
             holder.titleTvPosts.setText(postModelArrayList.get(position).getTitle());
             holder.bodyTv.setText(postModelArrayList.get(position).getBody());
+            if (position < 20){
+                holder.notReadedIv.setVisibility(View.VISIBLE);
+            }else{
+                holder.notReadedIv.setVisibility(View.GONE);
+            }
+            holder.postContainerRl.setOnClickListener(view -> {
+                holder.notReadedIv.setVisibility(View.GONE);
+            });
         }
     }
 
@@ -54,6 +64,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         TextView titleTvPosts;
         @BindView(R.id.bodyTv)
         TextView bodyTv;
+        @BindView(R.id.notReadedIv)
+        ImageView notReadedIv;
+        @BindView(R.id.postContainerRl)
+        RelativeLayout postContainerRl;
 
         MyViewHolder(View view) {
             super(view);
