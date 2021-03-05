@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PruebaAndroidSerempre</string>
+    <string name="app_tittle">Serempre</string>
+    <string name="clear_post_btn">Limpiar</string>
 </resources>
