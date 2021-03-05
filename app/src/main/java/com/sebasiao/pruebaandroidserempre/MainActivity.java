@@ -4,14 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.sebasiao.pruebaandroidserempre.network.ApiData;
 import com.sebasiao.pruebaandroidserempre.network.NetworkBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.reloadIv)
@@ -38,5 +52,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void getPost() {
         apiData = networkBuilder.getApiData();
+        Observable<Response<ResponseBody>> observable = apiData.getPosts();
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<ResponseBody>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<ResponseBody> responseBodyResponse) {
+                        if (responseBodyResponse.isSuccessful()){
+                            try {
+                                assert responseBodyResponse.body() != null;
+                                JSONArray object = new JSONArray(responseBodyResponse.body().string());
+                                Log.i("GET POSTS",object.toString());
+                            }catch (JSONException |NullPointerException| IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

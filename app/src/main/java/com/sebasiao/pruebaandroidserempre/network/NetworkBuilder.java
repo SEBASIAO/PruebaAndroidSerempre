@@ -8,7 +8,7 @@ public class NetworkBuilder {
     Retrofit retrofit;
     ApiData apiData;
     public NetworkBuilder() {
-        retrofit = new Retrofit.Builder().baseUrl("https://jsonplaceholder.typicode.com").addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
+        retrofit = new Retrofit.Builder().baseUrl("https://jsonplaceholder.typicode.com/").addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
         apiData = retrofit.create(ApiData.class);
     }
 
