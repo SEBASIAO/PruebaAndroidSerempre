@@ -27,7 +27,7 @@
         android:layout_gravity="center_vertical"
         android:background="@color/RedDelete"
         android:padding="5dp"
-        android:text="Limpiar"
+        android:text="Limpiar Filtro"
         android:textColor="#FFFFFF" />
 
     <TextView

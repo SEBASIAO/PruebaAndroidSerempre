@@ -51,8 +51,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                 holder.notReadedIv.setVisibility(View.GONE);
             });
 
-            holder.starIv.setOnClickListener(view -> {
+            holder.addFavTv.setOnClickListener(view -> {
                 if (context instanceof MainActivity){
+                    holder.starIv.setVisibility(View.VISIBLE);
                     ((MainActivity)context).addToFav(position);
                 }
             });
@@ -78,6 +79,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         RelativeLayout postContainerRl;
         @BindView(R.id.starIv)
         ImageView starIv;
+        @BindView(R.id.addFavTv)
+        TextView addFavTv;
 
         MyViewHolder(View view) {
             super(view);

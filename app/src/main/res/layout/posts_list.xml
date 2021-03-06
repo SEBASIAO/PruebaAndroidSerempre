@@ -16,13 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/starIv"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/addFavTv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bodyTv"
                 android:layout_centerHorizontal="true"
-                android:background="#F7FF00"
+                android:text="Añadir a Favoritos"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/starIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bodyTv"
+                android:background="#000e44"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_baseline_star_24" />
 
             <ImageView

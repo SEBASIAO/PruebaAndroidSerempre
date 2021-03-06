@@ -211,8 +211,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void addToFav (int position){
         PostModel favModel = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody());
-        favList.add(favModel);
-        Toast.makeText(this,"Post Nro: "+favModel.getId()+" añadido a favoritos",Toast.LENGTH_SHORT).show();
+        if (favList.size() > 0){
+            boolean isAdded = false;
+            for (int i =0 ; i < favList.size(); i++){
+                if (favModel.getId() == favList.get(i).getId()){
+                    isAdded = true;
+                    Toast.makeText(this,"Este Post ya está en tu lista de favoritos",Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+            if (!isAdded){
+                favList.add(favModel);
+                Toast.makeText(this,"Post Nro: "+favModel.getId()+" añadido a favoritos",Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            favList.add(favModel);
+            Toast.makeText(this,"Post Nro: "+favModel.getId()+" añadido a favoritos",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void showFavs () {
