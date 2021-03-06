@@ -18,10 +18,11 @@
 
             <TextView
                 android:id="@+id/addFavTv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bodyTv"
                 android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:text="Añadir a Favoritos"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />

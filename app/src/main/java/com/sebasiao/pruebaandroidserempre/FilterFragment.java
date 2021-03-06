@@ -36,7 +36,7 @@ public class FilterFragment extends Fragment {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.cleanFilterTv:
-                ((MainActivity)getActivity()).getPost();
+                ((MainActivity)getActivity()).cleanFilter();
                 break;
             case  R.id.filterFavTv:
                 ((MainActivity)getActivity()).showFavs();

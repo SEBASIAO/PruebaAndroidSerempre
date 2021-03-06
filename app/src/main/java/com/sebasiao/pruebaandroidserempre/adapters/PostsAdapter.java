@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,10 +25,12 @@ import butterknife.ButterKnife;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder>{
     private Context context;
     private ArrayList<PostModel> postModelArrayList;
+    private boolean isFav;
 
-    public PostsAdapter(Context context, ArrayList<PostModel> postsData) {
+    public PostsAdapter(Context context, ArrayList<PostModel> postsData,boolean isfav) {
         this.context = context;
         this.postModelArrayList = postsData;
+        this.isFav = isfav;
     }
 
     @NonNull
@@ -39,24 +42,47 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if (postModelArrayList.size() != 0){
-            holder.idTv.setText(postModelArrayList.get(position).getId()+"");
-            holder.titleTvPosts.setText(postModelArrayList.get(position).getTitle());
-            holder.bodyTv.setText(postModelArrayList.get(position).getBody());
-            if (position < 20){
-                holder.notReadedIv.setVisibility(View.VISIBLE);
-            }else{
-                holder.notReadedIv.setVisibility(View.GONE);
-            }
-            holder.postContainerRl.setOnClickListener(view -> {
-                holder.notReadedIv.setVisibility(View.GONE);
-            });
-
-            holder.addFavTv.setOnClickListener(view -> {
-                if (context instanceof MainActivity){
-                    holder.starIv.setVisibility(View.VISIBLE);
-                    ((MainActivity)context).addToFav(position);
+            if (isFav){
+                holder.starIv.setVisibility(View.VISIBLE);
+                holder.addFavTv.setVisibility(View.GONE);
+                holder.idTv.setText(postModelArrayList.get(position).getId()+"");
+                holder.titleTvPosts.setText(postModelArrayList.get(position).getTitle());
+                holder.bodyTv.setText(postModelArrayList.get(position).getBody());
+                if (postModelArrayList.get(position).getId() <= 20){
+                    holder.notReadedIv.setVisibility(View.VISIBLE);
+                }else{
+                    holder.notReadedIv.setVisibility(View.GONE);
                 }
-            });
+                holder.postContainerRl.setOnClickListener(view -> {
+                    holder.notReadedIv.setVisibility(View.GONE);
+                    Toast.makeText(context,postModelArrayList.get(position).getUserId()+"",Toast.LENGTH_SHORT).show();
+                });
+            }else{
+                holder.starIv.setVisibility(View.GONE);
+                holder.addFavTv.setVisibility(View.VISIBLE);
+                holder.idTv.setText(postModelArrayList.get(position).getId()+"");
+                holder.titleTvPosts.setText(postModelArrayList.get(position).getTitle());
+                holder.bodyTv.setText(postModelArrayList.get(position).getBody());
+                if (postModelArrayList.get(position).getId() <= 20){
+                    holder.notReadedIv.setVisibility(View.VISIBLE);
+                }else{
+                    holder.notReadedIv.setVisibility(View.GONE);
+                }
+                holder.postContainerRl.setOnClickListener(view -> {
+                    holder.notReadedIv.setVisibility(View.GONE);
+                    Toast.makeText(context,postModelArrayList.get(position).getUserId()+"",Toast.LENGTH_SHORT).show();
+                });
+
+                holder.addFavTv.setOnClickListener(view -> {
+                    if (context instanceof MainActivity){
+                        boolean add = ((MainActivity)context).addToFav(position);
+                        if (add){
+                            holder.addFavTv.setVisibility(View.GONE);
+                            holder.starIv.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+            }
         }
     }
 

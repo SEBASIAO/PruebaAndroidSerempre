@@ -4,13 +4,23 @@ import java.io.Serializable;
 
 public class PostModel implements Serializable {
     private int id;
+    private int userId;
     private String title;
     private String body;
 
-    public PostModel(int id, String title, String body) {
+    public PostModel(int id, String title, String body, int userId) {
         this.id = id;
         this.title = title;
         this.body = body;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getId() {

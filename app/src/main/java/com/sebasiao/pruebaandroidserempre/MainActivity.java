@@ -124,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
             postModelArrayList.clear();
             for (int i = 0 ; i < array.length() ; i++){
                 JSONObject post = array.getJSONObject(i);
-                PostModel postModel = new PostModel(post.getInt("id"),post.getString("title"),post.getString("body"));
+                PostModel postModel = new PostModel(post.getInt("id"),post.getString("title"),post.getString("body"),post.getInt("userId"));
                 postModelArrayList.add(postModel);
             }
             postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
-            postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList);
+            postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList,false);
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
             postRv.setAdapter(postsAdapter);
             noPostTv.setText(getString(R.string.slideToDelete));
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            deletedPost = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody());
+            deletedPost = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody(),postModelArrayList.get(position).getUserId());
             String deleted = getString(R.string.undoSlide)+(deletedPost.getId());
             postModelArrayList.remove(viewHolder.getAdapterPosition());
             postsAdapter.notifyDataSetChanged();
@@ -209,31 +209,45 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void addToFav (int position){
-        PostModel favModel = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody());
+    public boolean addToFav (int position){
+        PostModel favModel = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody(),postModelArrayList.get(position).getUserId());
         if (favList.size() > 0){
             boolean isAdded = false;
             for (int i =0 ; i < favList.size(); i++){
                 if (favModel.getId() == favList.get(i).getId()){
                     isAdded = true;
                     Toast.makeText(this,"Este Post ya está en tu lista de favoritos",Toast.LENGTH_SHORT).show();
-                    break;
+                    return false;
                 }
             }
             if (!isAdded){
                 favList.add(favModel);
                 Toast.makeText(this,"Post Nro: "+favModel.getId()+" añadido a favoritos",Toast.LENGTH_SHORT).show();
+                return true;
             }
         }else{
             favList.add(favModel);
             Toast.makeText(this,"Post Nro: "+favModel.getId()+" añadido a favoritos",Toast.LENGTH_SHORT).show();
+            return true;
         }
+        return false;
     }
 
     public void showFavs () {
         if (favList.size() > 0){
             postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
-            postsAdapter = new PostsAdapter(MainActivity.this,favList);
+            postsAdapter = new PostsAdapter(MainActivity.this,favList,true);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
+            postRv.setAdapter(postsAdapter);
+        }else{
+            Toast.makeText(this,"Tu lista de favoritos está vacia",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void cleanFilter () {
+        if (postModelArrayList.size() > 0){
+            postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
+            postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList,false);
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
             postRv.setAdapter(postsAdapter);
         }else{
