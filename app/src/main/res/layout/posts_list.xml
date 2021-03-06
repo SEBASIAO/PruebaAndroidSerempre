@@ -17,6 +17,15 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/starIv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bodyTv"
+                android:layout_centerHorizontal="true"
+                android:background="#F7FF00"
+                app:srcCompat="@drawable/ic_baseline_star_24" />
+
+            <ImageView
                 android:id="@+id/notReadedIv"
                 android:layout_width="15dp"
                 android:layout_height="15dp"

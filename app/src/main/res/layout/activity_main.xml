@@ -8,10 +8,21 @@
     tools:context=".MainActivity">
 
 
+    <FrameLayout
+        android:id="@+id/filterFrameLy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarRL"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:background="@drawable/bg_white_roundcorner">
+
+    </FrameLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbarRL"
+        android:layout_below="@id/filterFrameLy"
         android:padding="10dp">
 
         <TextView
@@ -48,6 +59,12 @@
         android:layout_height="wrap_content"
         android:background="#000e44"
         android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/filterIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_baseline_filter_list_24" />
 
         <ImageView
             android:id="@+id/reloadIv"

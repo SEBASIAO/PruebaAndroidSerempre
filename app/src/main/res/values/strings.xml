@@ -5,4 +5,5 @@
     <string name="noPost">Para volver a cargar la información toca el botón de recarga en la esquina superior derecha.</string>
     <string name="slideToDelete">Para eliminar un Post sólo desliza hacia la derecha o izquierda.</string>
     <string name="undoSlide">Eliminaste el Post Nro: </string>
+    <string name="filterBy">Filtrar por: </string>
 </resources>

@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sebasiao.pruebaandroidserempre.MainActivity;
+import com.sebasiao.pruebaandroidserempre.MainActivity_ViewBinding;
 import com.sebasiao.pruebaandroidserempre.R;
 import com.sebasiao.pruebaandroidserempre.models.PostModel;
 
@@ -48,6 +50,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             holder.postContainerRl.setOnClickListener(view -> {
                 holder.notReadedIv.setVisibility(View.GONE);
             });
+
+            holder.starIv.setOnClickListener(view -> {
+                if (context instanceof MainActivity){
+                    ((MainActivity)context).addToFav(position);
+                }
+            });
         }
     }
 
@@ -68,6 +76,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         ImageView notReadedIv;
         @BindView(R.id.postContainerRl)
         RelativeLayout postContainerRl;
+        @BindView(R.id.starIv)
+        ImageView starIv;
 
         MyViewHolder(View view) {
             super(view);

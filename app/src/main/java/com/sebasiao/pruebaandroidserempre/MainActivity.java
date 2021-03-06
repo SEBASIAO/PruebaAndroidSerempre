@@ -3,6 +3,8 @@ package com.sebasiao.pruebaandroidserempre;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,12 +56,19 @@ public class MainActivity extends AppCompatActivity {
     Button clearPostBt;
     @BindView(R.id.noPostTv)
     TextView noPostTv;
+    @BindView(R.id.filterIV)
+    ImageView filterIV;
+    @BindView(R.id.filterFrameLy)
+    FrameLayout filterFrameLy;
 
     private NetworkBuilder networkBuilder = new NetworkBuilder();
     private ApiData apiData;
     private PostsAdapter postsAdapter;
     private final ArrayList<PostModel> postModelArrayList = new ArrayList<>();
+    private final ArrayList<PostModel> favList = new ArrayList<>();
     PostModel deletedPost = null;
+    FilterFragment filterFragment = new FilterFragment();
+    private boolean fragmentVisible = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         getPost();
     }
 
-    private void getPost() {
+    public void getPost() {
         apiData = networkBuilder.getApiData();
         Observable<Response<ResponseBody>> observable = apiData.getPosts();
         observable.subscribeOn(Schedulers.io())
@@ -109,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecycler(JSONArray array) {
         if (array.length() == 0 || array.equals(null)){
-            Toast.makeText(MainActivity.this,"asdsadasdasd",Toast.LENGTH_SHORT).show();
         }else{
         try {
             postModelArrayList.clear();
@@ -129,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.clearPostBt,R.id.reloadIv})
+    @OnClick({R.id.clearPostBt,R.id.reloadIv,R.id.filterIV})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.clearPostBt:
@@ -138,13 +147,30 @@ public class MainActivity extends AppCompatActivity {
             case  R.id.reloadIv:
                 getPost();
                 break;
+            case R.id.filterIV:
+                loadFragment(filterFragment);
+                break;
             default:
                 break;
         }
     }
 
-    private void clearRv() {
+    private void loadFragment(Fragment fragment) {
+        if (fragmentVisible){
+            filterFrameLy.setVisibility(View.GONE);
+            fragmentVisible=false;
+        }else{
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.filterFrameLy,fragment);
+            transaction.commit();
+            filterFrameLy.setVisibility(View.VISIBLE);
+            fragmentVisible = true;
+        }
+    }
+
+    public void clearRv() {
         postModelArrayList.clear();
+        favList.clear();
         postsAdapter.notifyDataSetChanged();
         noPostTv.setText(getString(R.string.noPost));
     }
@@ -182,4 +208,21 @@ public class MainActivity extends AppCompatActivity {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+    public void addToFav (int position){
+        PostModel favModel = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody());
+        favList.add(favModel);
+        Toast.makeText(this,"Post Nro: "+favModel.getId()+" añadido a favoritos",Toast.LENGTH_SHORT).show();
+    }
+
+    public void showFavs () {
+        if (favList.size() > 0){
+            postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
+            postsAdapter = new PostsAdapter(MainActivity.this,favList);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
+            postRv.setAdapter(postsAdapter);
+        }else{
+            Toast.makeText(this,"Tu lista de favoritos está vacia",Toast.LENGTH_SHORT).show();
+        }
+    }
 }
