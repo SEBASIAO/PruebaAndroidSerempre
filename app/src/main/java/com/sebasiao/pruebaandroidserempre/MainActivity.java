@@ -1,10 +1,15 @@
 package com.sebasiao.pruebaandroidserempre;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.sebasiao.pruebaandroidserempre.adapters.PostsAdapter;
 import com.sebasiao.pruebaandroidserempre.models.PostModel;
 import com.sebasiao.pruebaandroidserempre.network.ApiData;
@@ -33,6 +40,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private ApiData apiData;
     private PostsAdapter postsAdapter;
     private final ArrayList<PostModel> postModelArrayList = new ArrayList<>();
-
+    PostModel deletedPost = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
             }
             postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
             postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
             postRv.setAdapter(postsAdapter);
+            noPostTv.setText(getString(R.string.slideToDelete));
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -126,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 clearRv();
                 break;
             case  R.id.reloadIv:
-                noPostTv.setVisibility(View.GONE);
                 getPost();
                 break;
             default:
@@ -136,9 +145,41 @@ public class MainActivity extends AppCompatActivity {
 
     private void clearRv() {
         postModelArrayList.clear();
-        postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
-        postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList);
-        postRv.setAdapter(postsAdapter);
-        noPostTv.setVisibility(View.VISIBLE);
+        postsAdapter.notifyDataSetChanged();
+        noPostTv.setText(getString(R.string.noPost));
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            deletedPost = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody());
+            String deleted = getString(R.string.undoSlide)+(deletedPost.getId());
+            postModelArrayList.remove(viewHolder.getAdapterPosition());
+            postsAdapter.notifyDataSetChanged();
+            Snackbar.make(postRv,deleted, Snackbar.LENGTH_LONG)
+                    .setAction("Deshacer", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            postModelArrayList.add(position,deletedPost);
+                            postsAdapter.notifyDataSetChanged();
+                        }
+                    }).show();
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.RedDelete))
+                    .addActionIcon(R.drawable.ic_baseline_delete_24)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 }
