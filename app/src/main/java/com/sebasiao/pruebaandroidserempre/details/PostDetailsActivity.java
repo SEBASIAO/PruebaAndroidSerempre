@@ -64,13 +64,17 @@ public class PostDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
         ButterKnife.bind(this);
+        //Get the info coming from MainActivity
         if (getIntent() != null){
+            //userId is used to find the User who wrote the Post
             userId = Integer.parseInt(getIntent().getExtras().getString("userId"));
         }
+        ////API Call to get all Users from https://jsonplaceholder.typicode.com/
         getUsers();
     }
 
     private void getUsers() {
+        //Get Users using Observable from RX Java
         apiData = networkBuilder.getApiData();
         Observable<Response<ResponseBody>> observable = apiData.getUsers();
         observable.subscribeOn(Schedulers.io())
@@ -105,7 +109,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    //Method to find the User who wrote the Post and display the User info
     private void showUserInfo(JSONArray object) {
         if (object.length() != 0 && !object.equals(null)){
             try {
@@ -142,7 +146,7 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         }
     }
-
+    //Method OnClick from ButterKnife library
     @OnClick({R.id.backDetailsIv})
     public void onClick(View view){
         switch (view.getId()){

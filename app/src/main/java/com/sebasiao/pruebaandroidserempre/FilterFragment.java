@@ -31,7 +31,7 @@ public class FilterFragment extends Fragment {
         ButterKnife.bind(this,view);
         return view;
     }
-
+    //OnClick who calls methods of MainActivity from this Fragment to show/clean the filter
     @OnClick({R.id.cleanFilterTv,R.id.filterFavTv})
     public void onClick(View view){
         switch (view.getId()){

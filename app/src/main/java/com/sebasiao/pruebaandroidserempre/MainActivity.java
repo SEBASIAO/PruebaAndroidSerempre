@@ -83,12 +83,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         init();
     }
-
+    //Init Main Activity
     private void init() {
+        //API Call to get all Posts from https://jsonplaceholder.typicode.com/
         getPost();
     }
 
     public void getPost() {
+        //Get Posts using Observable from RX Java
         apiData = networkBuilder.getApiData();
         Observable<Response<ResponseBody>> observable = apiData.getPosts();
         observable.subscribeOn(Schedulers.io())
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 assert responseBodyResponse.body() != null;
                                 JSONArray object = new JSONArray(responseBodyResponse.body().string());
+                                //Init RecyclerView with all the Posts
                                 initRecycler(object);
                             }catch (JSONException |NullPointerException| IOException e){
                                 e.printStackTrace();
@@ -123,12 +126,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    //Init RecyclerView with all the Posts
     private void initRecycler(JSONArray array) {
         if (array.length() == 0 || array.equals(null)){
         }else{
         try {
             postModelArrayList.clear();
+            //Add all the Posts info into ArrayList
             for (int i = 0 ; i < array.length() ; i++){
                 JSONObject post = array.getJSONObject(i);
                 PostModel postModel = new PostModel(post.getInt("id"),post.getString("title"),post.getString("body"),post.getInt("userId"));
@@ -136,9 +140,11 @@ public class MainActivity extends AppCompatActivity {
             }
             postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
             postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList,false);
+            //Attach ITH to RecyclerView
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
             postRv.setAdapter(postsAdapter);
             noPostTv.setText(getString(R.string.slideToDelete));
+            //Animation to RecyclerView
             Transition transition = new Slide(Gravity.BOTTOM);
             transition.setDuration(500);
             transition.addTarget(postRv);
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
         }
     }
-
+    //On click method from ButterKnife Library
     @OnClick({R.id.clearPostBt,R.id.reloadIv,R.id.filterIV})
     public void onClick(View view){
         switch (view.getId()){
@@ -167,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
+    //Load filter fragment and toogle visibility
     private void loadFragment(Fragment fragment) {
         if (fragmentVisible){
             filterFrameLy.setVisibility(View.GONE);
@@ -180,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentVisible = true;
         }
     }
-
+    //Method to remove all the Posts even Favorites Post
     public void clearRv() {
         Transition transition = new Fade();
         transition.setDuration(500);
@@ -194,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         postRv.setVisibility(View.GONE);
     }
 
+    //Item Touch Helper to add Swipe to delete function
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -207,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
             String deleted = getString(R.string.undoSlide)+(deletedPost.getId());
             postModelArrayList.remove(viewHolder.getAdapterPosition());
             postsAdapter.notifyDataSetChanged();
+            //Snackbar to undo delete
             Snackbar.make(postRv,deleted, Snackbar.LENGTH_LONG)
                     .setAction("Deshacer", new View.OnClickListener() {
                         @Override
@@ -228,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //Method called from adapter to add one Post to Favorite ArrayList
     public boolean addToFav (int position){
         PostModel favModel = new PostModel(postModelArrayList.get(position).getId(),postModelArrayList.get(position).getTitle(),postModelArrayList.get(position).getBody(),postModelArrayList.get(position).getUserId());
         if (favList.size() > 0){
@@ -251,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
+    //Method called from FilterFragment to show the Favorite ArrayList into RecyclerView
     public void showFavs () {
         if (favList.size() > 0){
             postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
@@ -262,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Tu lista de favoritos está vacia",Toast.LENGTH_SHORT).show();
         }
     }
-
+    //Method called from FilterFragment to show the complete Post ArrayList
     public void cleanFilter () {
         if (postModelArrayList.size() > 0){
             postRv.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
