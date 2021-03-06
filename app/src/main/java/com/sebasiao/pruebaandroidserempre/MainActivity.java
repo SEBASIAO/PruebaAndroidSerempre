@@ -13,8 +13,14 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.ColorSpace;
 import android.os.Bundle;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView filterIV;
     @BindView(R.id.filterFrameLy)
     FrameLayout filterFrameLy;
+
 
     private NetworkBuilder networkBuilder = new NetworkBuilder();
     private ApiData apiData;
@@ -132,6 +139,12 @@ public class MainActivity extends AppCompatActivity {
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
             postRv.setAdapter(postsAdapter);
             noPostTv.setText(getString(R.string.slideToDelete));
+            Transition transition = new Slide(Gravity.BOTTOM);
+            transition.setDuration(500);
+            transition.addTarget(postRv);
+            ViewGroup viewGroup = (ViewGroup) findViewById(R.id.postRv);
+            TransitionManager.beginDelayedTransition(viewGroup,transition);
+            postRv.setVisibility(View.VISIBLE);
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -169,10 +182,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearRv() {
+        Transition transition = new Fade();
+        transition.setDuration(500);
+        transition.addTarget(postRv);
+        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.postRv);
+        TransitionManager.beginDelayedTransition(viewGroup,transition);
         postModelArrayList.clear();
         favList.clear();
         postsAdapter.notifyDataSetChanged();
         noPostTv.setText(getString(R.string.noPost));
+        postRv.setVisibility(View.GONE);
     }
 
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
@@ -250,8 +269,6 @@ public class MainActivity extends AppCompatActivity {
             postsAdapter = new PostsAdapter(MainActivity.this,postModelArrayList,false);
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(postRv);
             postRv.setAdapter(postsAdapter);
-        }else{
-            Toast.makeText(this,"Tu lista de favoritos está vacia",Toast.LENGTH_SHORT).show();
         }
     }
 }
