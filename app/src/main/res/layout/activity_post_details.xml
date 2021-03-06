@@ -1,9 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".details.PostDetailsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarDetailsRL"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/nameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/nameTitleTv"
+                    android:gravity="center"
+                    android:text="Nombre:"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/nameTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Nombre:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/usernameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/usernameTitleTv"
+                    android:gravity="center"
+                    android:text="Username"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/usernameTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Usuario:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/emailTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/emailTitleTv"
+                    android:gravity="center"
+                    android:text="Email"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/emailTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Email:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/addressTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/addressTitleTv"
+                    android:gravity="center"
+                    android:text="address"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/addressTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Dirección:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/locationTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/locationTitleTv"
+                    android:gravity="center"
+                    android:text="location"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/locationTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Ubicación:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/phoneTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/phoneTitleTv"
+                    android:gravity="center"
+                    android:text="phone"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/phoneTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Telefono:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/websiteTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/websiteTitleTv"
+                    android:gravity="center"
+                    android:text="Sitio web"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/websiteTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Sitio Web:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_white_roundcorner">
+
+                <TextView
+                    android:id="@+id/companyTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/companyTitleTv"
+                    android:gravity="center"
+                    android:text="emopresa"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/companyTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_appcolordark_roundcorner"
+                    android:padding="10dp"
+                    android:text="Empresa:"
+                    android:textAllCaps="true" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/toolbarDetailsRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000e44"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/backDetailsIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+        <TextView
+            android:id="@+id/tittleTvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Detalles"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</RelativeLayout>

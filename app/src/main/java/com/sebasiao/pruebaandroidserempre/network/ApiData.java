@@ -8,4 +8,6 @@ import retrofit2.http.GET;
 public interface ApiData {
     @GET("posts")
     Observable<Response<ResponseBody>> getPosts();
+    @GET("users")
+    Observable<Response<ResponseBody>> getUsers();
 }

@@ -1,6 +1,7 @@
 package com.sebasiao.pruebaandroidserempre.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sebasiao.pruebaandroidserempre.MainActivity;
 import com.sebasiao.pruebaandroidserempre.MainActivity_ViewBinding;
 import com.sebasiao.pruebaandroidserempre.R;
+import com.sebasiao.pruebaandroidserempre.details.PostDetailsActivity;
 import com.sebasiao.pruebaandroidserempre.models.PostModel;
 
 import java.util.ArrayList;
@@ -55,7 +57,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                 }
                 holder.postContainerRl.setOnClickListener(view -> {
                     holder.notReadedIv.setVisibility(View.GONE);
-                    Toast.makeText(context,postModelArrayList.get(position).getUserId()+"",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, PostDetailsActivity.class);
+                    intent.putExtra("userId",String.valueOf(postModelArrayList.get(position).getUserId()));
+                    context.startActivity(intent);
                 });
             }else{
                 holder.starIv.setVisibility(View.GONE);
@@ -70,7 +74,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                 }
                 holder.postContainerRl.setOnClickListener(view -> {
                     holder.notReadedIv.setVisibility(View.GONE);
-                    Toast.makeText(context,postModelArrayList.get(position).getUserId()+"",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,postModelArrayList.get(position).getUserId()+"",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, PostDetailsActivity.class);
+                    intent.putExtra("userId",String.valueOf(postModelArrayList.get(position).getUserId()));
+                    context.startActivity(intent);
                 });
 
                 holder.addFavTv.setOnClickListener(view -> {
